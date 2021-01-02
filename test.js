@@ -115,6 +115,12 @@ test('micromark-extension-directive (syntax)', function (t) {
     )
 
     t.equal(
+      micromark(':a[a [b](c)]asd', options()),
+      '<p>asd</p>',
+      'should support links in an label'
+    )
+
+    t.equal(
       micromark(':a[]asd', options()),
       '<p>asd</p>',
       'should support content after a label'
@@ -1057,7 +1063,8 @@ test('micromark-extension-directive (compile)', function (t) {
         ':abbr',
         ':abbr[HTML]',
         ':abbr{title="HyperText Markup Language"}',
-        ':abbr[HTML]{title="HyperText Markup Language"}'
+        ':abbr[HTML]{title="HyperText Markup Language"}',
+        ':abbr[HTML [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML)]{title="HyperText Markup Language"}'
       ].join('\n\n'),
       options({abbr: abbr})
     ),
@@ -1065,7 +1072,8 @@ test('micromark-extension-directive (compile)', function (t) {
       '<p><abbr></abbr></p>',
       '<p><abbr>HTML</abbr></p>',
       '<p><abbr title="HyperText Markup Language"></abbr></p>',
-      '<p><abbr title="HyperText Markup Language">HTML</abbr></p>'
+      '<p><abbr title="HyperText Markup Language">HTML</abbr></p>',
+      '<p><abbr title="HyperText Markup Language">HTML <a href="https://developer.mozilla.org/en-US/docs/Web/HTML">MDN</a></abbr></p>'
     ].join('\n'),
     'should support a directives (abbr)'
   )
